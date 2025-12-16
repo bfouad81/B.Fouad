@@ -1,25 +1,119 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Sail Shipping </title>
-<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
-  iframe {
-    width: 100%;
-    height: 100vh; 
-    border: none;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <title>Cargo Acceptance & Receiving Form</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f5f7fa; }
+    .container { max-width: 1000px; margin: 20px auto; background:#fff; padding:20px; border-radius:8px; }
+    h2 { background:#0f2a44; color:#fff; padding:10px; border-radius:4px; margin-top:20px; }
+    table { width:100%; border-collapse: collapse; margin-bottom:20px; }
+    th, td { border:1px solid #ccc; padding:8px; text-align:left; }
+    th { background:#e9eef3; }
+    input, textarea, select { width:100%; padding:6px; box-sizing: border-box; }
+    .checkbox-group input { width:auto; margin-right:5px; }
+    .submit-btn { background:#0f2a44; color:#fff; padding:10px 20px; border:none; border-radius:5px; cursor:pointer; font-size:16px; }
+    .submit-btn:hover { background:#0d2336; }
+  </style>
 </head>
 <body>
-<iframe 
-src="https://forms.zohopublic.com/vidabeautysales1gm1/form/UAEtoKuwaitCargoShipmentConsolidationForm/formperma/aYu4FWPNDqSMSEmbQUvf0B9cC8Chpzta4Pwlgdaz0cE" 
-allowfullscreen>
-</iframe>
+<div class="container">
+<form method="POST" action="YOUR_WEB_APP_URL">
+
+<h2>1. Company Information (Receiver)</h2>
+<table>
+<tr><td>Company Name</td><td><input name="receiver_company" required></td></tr>
+<tr><td>Address</td><td><input name="receiver_address"></td></tr>
+<tr><td>Contact Person</td><td><input name="receiver_contact"></td></tr>
+<tr><td>Phone / Email</td><td><input name="receiver_phone"></td></tr>
+</table>
+
+<h2>2. Customer / Shipper Information</h2>
+<table>
+<tr><td>Customer / Shipper Name</td><td><input name="shipper_name" required></td></tr>
+<tr><td>Company Name (if any)</td><td><input name="shipper_company"></td></tr>
+<tr><td>Address</td><td><input name="shipper_address"></td></tr>
+<tr><td>Contact Person</td><td><input name="shipper_contact"></td></tr>
+<tr><td>Phone / Email</td><td><input name="shipper_phone"></td></tr>
+</table>
+
+<h2>3. Shipment Details</h2>
+<table>
+<tr><td>Shipment Reference No.</td><td><input name="shipment_ref"></td></tr>
+<tr><td>Date Received</td><td><input type="date" name="date_received"> Time <input type="time" name="time_received"></td></tr>
+<tr><td>Mode of Transport</td><td class="checkbox-group">
+<input type="checkbox" name="mode" value="Land"> Land 
+<input type="checkbox" name="mode" value="Air"> Air 
+<input type="checkbox" name="mode" value="Sea"> Sea
+</td></tr>
+<tr><td>Shipment Type</td><td class="checkbox-group">
+<input type="checkbox" name="type" value="LTL"> LTL 
+<input type="checkbox" name="type" value="FTL"> FTL 
+<input type="checkbox" name="type" value="Courier"> Courier 
+<input type="checkbox" name="type" value="Other"> Other
+</td></tr>
+<tr><td>Origin (Pickup Location)</td><td><input name="origin"></td></tr>
+<tr><td>Final Destination</td><td><input name="destination"></td></tr>
+</table>
+
+<h2>4. Cargo Description (As per Shipper)</h2>
+<table>
+<tr><th>No</th><th>Description of Goods</th><th>No. of Packages</th><th>Packaging Type</th><th>Weight (KG)</th><th>CBM</th><th>Remarks</th></tr>
+<tr><td>1</td><td><input name="desc1"></td><td><input name="pkg1"></td><td><input name="pack1"></td><td><input name="wt1"></td><td><input name="cbm1"></td><td><input name="rem1"></td></tr>
+<tr><td>2</td><td><input name="desc2"></td><td><input name="pkg2"></td><td><input name="pack2"></td><td><input name="wt2"></td><td><input name="cbm2"></td><td><input name="rem2"></td></tr>
+<tr><td>3</td><td><input name="desc3"></td><td><input name="pkg3"></td><td><input name="pack3"></td><td><input name="wt3"></td><td><input name="cbm3"></td><td><input name="rem3"></td></tr>
+<tr><td>4</td><td><input name="desc4"></td><td><input name="pkg4"></td><td><input name="pack4"></td><td><input name="wt4"></td><td><input name="cbm4"></td><td><input name="rem4"></td></tr>
+<tr><td>5</td><td><input name="desc5"></td><td><input name="pkg5"></td><td><input name="pack5"></td><td><input name="wt5"></td><td><input name="cbm5"></td><td><input name="rem5"></td></tr>
+</table>
+
+<h2>5. Documents Received</h2>
+<table>
+<tr><td class="checkbox-group">
+<input type="checkbox" name="docs" value="Invoice"> Invoice 
+<input type="checkbox" name="docs" value="Packing List"> Packing List 
+<input type="checkbox" name="docs" value="CMR"> CMR / Waybill 
+<input type="checkbox" name="docs" value="COO"> Certificate of Origin 
+<input type="checkbox" name="docs" value="MSDS"> MSDS 
+<input type="checkbox" name="docs" value="Other"> Other
+</td></tr>
+</table>
+
+<h2>6. Cargo Condition at Time of Handover</h2>
+<table>
+<tr><td class="checkbox-group">
+<input type="checkbox" name="condition" value="Good"> Good / Intact 
+<input type="checkbox" name="condition" value="Damaged"> Damaged 
+<input type="checkbox" name="condition" value="Weak"> Packaging Noted as Weak
+</td></tr>
+<tr><td>Remarks / Visible Damage Description</td><td><textarea name="condition_remarks"></textarea></td></tr>
+</table>
+
+<h2>7. Special Handling / Instructions</h2>
+<table>
+<tr><td class="checkbox-group">
+<input type="checkbox" name="handling" value="Fragile"> Fragile 
+<input type="checkbox" name="handling" value="Upright"> Keep Upright 
+<input type="checkbox" name="handling" value="Temp"> Temperature Controlled 
+<input type="checkbox" name="handling" value="NoStack"> Do Not Stack 
+<input type="checkbox" name="handling" value="Other"> Other
+</td></tr>
+</table>
+
+<h2>8. Declaration</h2>
+<p>I hereby confirm that the above shipment has been handed over by the customer and received by the logistics company in the stated condition and quantity for shipment to the final destination.</p>
+
+<h2>9. Signatures</h2>
+<table>
+<tr><td>Handed Over By (Customer)</td><td>Received By (Company)</td></tr>
+<tr><td><input name="cust_name"></td><td><input name="comp_name"></td></tr>
+<tr><td>Signature <input name="cust_sign"></td><td>Signature <input name="comp_sign"></td></tr>
+<tr><td>Date <input type="date" name="cust_date"></td><td>Date <input type="date" name="comp_date"></td></tr>
+<tr><td>Company Stamp</td><td><input name="comp_stamp"></td></tr>
+</table>
+
+<button class="submit-btn" type="submit">Submit Form</button>
+
+</form>
+</div>
 </body>
 </html>
