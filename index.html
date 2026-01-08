@@ -1,586 +1,550 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<title>Cargo Acceptance & Receiving Form</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EGO Express - Simplifying Global Trade</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.5/dist/signature_pad.umd.min.js"></script>
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+        }
 
-<style>
-:root{
-  --red-main:#c62828;
-  --red-soft:#f6eaea;
-  --border-soft:#ddd;
-}
-*{box-sizing:border-box;}
-body{margin:0;padding:0;background:#f2f2f2;font-family:Arial,sans-serif;color:#000;}
-.form-container{
-  max-width:1200px;
-  margin:0 auto;
-  padding:10px 15px;
-  background:#fff;
-  border-radius:12px;
-  overflow:hidden;
-  box-shadow:0 8px 25px rgba(0,0,0,0.08);
-}
+        /* Hero Section with Video */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-/* HEADER */
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  padding:15px 20px;
-  background:#fff;
-  border-bottom:4px solid var(--red-main);
-}
-.logo img{
-  max-width:100%; max-height:70px; object-fit:contain;
-}
-.header-text{flex:1;text-align:right;}
-.header-text h2{margin:0;color:var(--red-main);}
-.header-text p{margin:5px 0 0;opacity:0.9;text-align:right;}
-@media(max-width:900px){
-  .header{flex-direction:column;align-items:center;text-align:center;}
-  .header-text{text-align:center;margin-top:10px;}
-}
+        /* Fixed Video Background */
+        .hero-video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+        }
 
-/* Sections */
-.section{padding:20px;border-bottom:1px solid var(--border-soft); page-break-inside:avoid;}
-.section-title{
-  display:block;
-  width:100%;
-  padding:10px 20px;
-  font-weight:bold;
-  color:#fff;
-  background-color:var(--red-main);
-  border-radius:12px;
-  margin-bottom:15px;
-  font-size:16px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.1);
-}
-.note{font-size:13px;color:#666;margin:10px 0;}
+        .hero-video-container iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 100vh;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
 
-/* Grid */
-.row{display:grid;grid-template-columns:repeat(12,1fr);gap:15px;}
-.col-1{grid-column:span 1}.col-2{grid-column:span 2}.col-3{grid-column:span 3}
-.col-4{grid-column:span 4}.col-5{grid-column:span 5}.col-6{grid-column:span 6}
-.col-8{grid-column:span 8}.col-12{grid-column:span 12}
+        @media (min-aspect-ratio: 16/9) {
+            .hero-video-container iframe {
+                height: 56.25vw;
+            }
+        }
 
-/* Fields */
-label{font-size:13px;font-weight:bold;}
-input,select,textarea{width:100%;padding:9px;margin-top:6px;border:1px solid var(--border-soft);border-radius:6px;transition:.2s}
-textarea{resize:vertical}
-input.filled,select.filled,textarea.filled{background:var(--red-soft);border-color:var(--red-main);}
-.error-msg{color:#c62828;font-size:12px;margin-top:4px;display:none;}
+        @media (max-aspect-ratio: 16/9) {
+            .hero-video-container iframe {
+                width: 177.78vh;
+            }
+        }
 
-/* Signature */
-.signature-box{border:1px dashed var(--border-soft);border-radius:6px;height:160px;background:#fafafa;}
-.clear-btn{margin-top:6px;padding:5px 10px;border:none;background:#eee;cursor:pointer;border-radius:4px;}
-.clear-btn:hover{background:#ddd;}
-.submit-btn{width:100%;padding:18px;border:none;background:var(--red-main);color:#fff;font-size:16px;cursor:pointer;border-radius:8px;transition:.3s;}
-.submit-btn:hover:not(:disabled){background:#a01f1f;}
-.submit-btn:disabled{opacity:0.6;cursor:not-allowed;}
+        .hero-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 50%, rgba(0,0,0,0.2) 100%);
+            z-index: 1;
+        }
 
-/* Hide in PDF */
-.hide-in-pdf{display:block;}
-@media print{
-  .hide-in-pdf{display:none !important;}
-}
+        .logo {
+            position: absolute;
+            top: 50%;
+            left: 100px;
+            transform: translateY(-50%);
+            z-index: 1000;
+            margin-bottom: 400px;
+            opacity: 0;
+            animation: slideUp 1.2s ease-out 0.3s forwards;
+        }
 
-/* Responsive */
-@media(max-width:900px){
-  .col-1,.col-2,.col-3,.col-4,.col-5,.col-6,.col-8{grid-column:span 12 !important;}
-}
-.company-logo{
-  max-height:60px;
-  width:auto;
-  display:block;
-}
+        .logo img {
+            height: 180px;
+            width: auto;
+            max-width: 500px;
+            display: block;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+        }
 
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(-50%) translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-50%) translateY(0);
+            }
+        }
 
-</style>
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 100px;
+            transform: translateY(-50%);
+            z-index: 5;
+            max-width: 600px;
+            margin-top: 200px;
+            opacity: 0;
+            animation: slideUp 1.2s ease-out 0.6s forwards;
+        }
+
+        .hero-content h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        .hero-content h1 {
+            font-size: 72px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 30px;
+        }
+
+        .hero-content h1 .red {
+            color: #FF3333;
+        }
+
+        .hero-content h1 .black {
+            color: #000;
+        }
+
+        /* About Section */
+        .about-section {
+            position: relative;
+            background: linear-gradient(180deg, #f8f5f0 0%, #ffffff 100%);
+            padding: 80px 60px;
+            z-index: 10;
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 56px;
+            font-weight: 900;
+            color: #FF3333;
+            line-height: 1.1;
+            margin-bottom: 0;
+            text-align: left;
+        }
+
+        .about-description {
+            font-size: 19px;
+            line-height: 1.7;
+            color: #FF3333;
+            text-align: left;
+        }
+
+        /* Services Section */
+        .services-section {
+            position: relative;
+            background: #FF3333;
+            padding: 80px 60px;
+            z-index: 10;
+        }
+
+        .services-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .services-header h2 {
+            font-size: 72px;
+            color: white;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .services-header p {
+            font-size: 22px;
+            color: white;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 80px 100px;
+        }
+
+        .service-card {
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .service-icon {
+            font-size: 70px;
+            flex-shrink: 0;
+        }
+
+        .service-content h3 {
+            font-size: 38px;
+            color: white;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-align: left;
+        }
+
+        .service-content p {
+            font-size: 17px;
+            color: white;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .logo {
+                left: 40px;
+                transform: translateY(-50%);
+                margin-bottom: 350px;
+            }
+
+            .logo img {
+                height: 120px;
+                max-width: 350px;
+            }
+
+            .hero-content {
+                left: 40px;
+                max-width: calc(100% - 80px);
+                margin-top: 150px;
+            }
+
+            .hero-content h2 {
+                font-size: 18px;
+            }
+
+            .hero-content h1 {
+                font-size: 44px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .about-text h2 {
+                font-size: 42px;
+                text-align: center;
+            }
+
+            .about-description {
+                font-size: 16px;
+                text-align: center;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .services-header h2 {
+                font-size: 52px;
+            }
+
+            .service-content h3 {
+                font-size: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                left: 20px;
+                transform: translateY(-50%);
+                margin-bottom: 300px;
+                text-align: left;
+            }
+
+            .logo img {
+                height: 110px;
+                max-width: 280px;
+                margin: 0;
+            }
+
+            .hero-content {
+                left: 20px;
+                right: auto;
+                max-width: calc(100% - 40px);
+                top: 45%;
+                margin-top: 160px;
+                text-align: left;
+            }
+
+            .hero-content h2 {
+                font-size: 11px;
+                margin-bottom: 15px;
+                text-align: left;
+            }
+
+            .hero-content h1 {
+                font-size: 32px;
+                text-align: left;
+            }
+
+            .about-section,
+            .services-section {
+                padding: 50px 20px;
+            }
+
+            .about-text h2 {
+                font-size: 32px;
+                text-align: center;
+            }
+
+            .about-description {
+                font-size: 15px;
+                text-align: center;
+            }
+
+            .services-header h2 {
+                font-size: 36px;
+                margin-bottom: 20px;
+            }
+
+            .services-header p {
+                font-size: 16px;
+            }
+
+            .service-card {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                align-items: center;
+            }
+
+            .service-content h3,
+            .service-content p,
+            .about-text h2,
+            .about-description {
+                text-align: center;
+            }
+
+            .service-icon {
+                font-size: 60px;
+            }
+
+            .service-content h3 {
+                font-size: 24px;
+            }
+
+            .service-content p {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                left: 15px;
+                transform: translateY(-50%);
+                margin-bottom: 260px;
+            }
+
+            .logo img {
+                height: 90px;
+                max-width: 250px;
+            }
+
+            .hero-content {
+                left: 15px;
+                right: auto;
+                transform: translateY(-50%);
+                max-width: calc(100% - 30px);
+                margin-top: 140px;
+                text-align: left;
+            }
+
+            .hero-content h2 {
+                font-size: 10px;
+                letter-spacing: 1px;
+                text-align: left;
+            }
+
+            .hero-content h1 {
+                font-size: 26px;
+                text-align: left;
+            }
+
+            .about-section {
+                padding: 40px 15px;
+            }
+
+            .about-text h2 {
+                font-size: 28px;
+            }
+
+            .about-description {
+                font-size: 14px;
+            }
+
+            .services-section {
+                padding: 40px 15px;
+            }
+
+            .services-header h2 {
+                font-size: 28px;
+            }
+
+            .services-header p {
+                font-size: 14px;
+            }
+
+            .services-grid {
+                gap: 35px;
+            }
+
+            .service-icon {
+                font-size: 50px;
+            }
+
+            .service-content h3 {
+                font-size: 20px;
+            }
+
+            .service-content p {
+                font-size: 14px;
+            }
+        }
+
+        /* Landscape phones */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .hero-section {
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .hero-content {
+                top: 50%;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-<div class="form-container">
+    <!-- Hero Section with Vimeo Video Background -->
+    <section class="hero-section">
+        <!-- Vimeo Background Video -->
+        <div class="hero-video-container">
+            <iframe 
+                src="https://player.vimeo.com/video/1152546989?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1"
+                frameborder="0" 
+                allow="autoplay; fullscreen; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        
+        <div class="hero-overlay"></div>
+        
+        <!-- Logo -->
+        <div class="logo">
+            <img src="https://i.postimg.cc/k5RM67Nt/logo-(2).png" alt="EGO Express Logo">
+        </div>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="logo">
-    <img src="data:image/png;base64,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" class="company-logo">
-  </div>
-  <div class="header-text">
-    <h2>Cargo Acceptance & Receiving Form</h2>
-  </div>
-</div>
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <h2>SIMPLIFYING GLOBAL TRADE</h2>
+            <h1>
+                <span class="red">Your</span> <span class="black">Freight,</span><br>
+                <span class="black">Our</span> <span class="red">Focus</span>
+            </h1>
+        </div>
+    </section>
 
-<!-- CUSTOMER -->
-<div class="section">
-<div class="section-title">Customer / Shipper</div>
-<div class="row">
-  <div class="col-4">
-    <label>Name *</label>
-    <input id="customerName" required>
-    <span class="error-msg" id="error-customerName">This field is required</span>
-  </div>
-  <div class="col-4">
-    <label>Phone *</label>
-    <input id="customerPhone" required>
-    <span class="error-msg" id="error-customerPhone">This field is required</span>
-  </div>
-  <div class="col-4">
-    <label>Address *</label>
-    <input id="customerAddress" required>
-    <span class="error-msg" id="error-customerAddress">This field is required</span>
-  </div>
-  <div class="col-4"><label>Email</label><input id="customerEmail" type="email"></div>
-</div>
-</div>
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>Seamless<br>Global Logistics</h2>
+            </div>
+            <div class="about-description">
+                <p>We manage the complexity of international transport, offering reliable, end-to-end freight solutions across air, sea, and land. We are connecting the world, one shipment at a time.</p>
+            </div>
+        </div>
+    </section>
 
-<!-- CONSIGNEE -->
-<div class="section">
-<div class="section-title">Consignee / Receiver</div>
-<div class="row">
-  <div class="col-4">
-    <label>Name *</label>
-    <input id="consigneeName" required>
-    <span class="error-msg" id="error-consigneeName">This field is required</span>
-  </div>
-  <div class="col-4">
-    <label>Phone *</label>
-    <input id="consigneePhone" required>
-    <span class="error-msg" id="error-consigneePhone">This field is required</span>
-  </div>
-  <div class="col-4">
-    <label>Address *</label>
-    <input id="consigneeAddress" required>
-    <span class="error-msg" id="error-consigneeAddress">This field is required</span>
-  </div>
-  <div class="col-4"><label>Email</label><input id="consigneeEmail" type="email"></div>
-  <div class="col-4"><label>Company Name (if any)</label><input id="consigneeCompany"></div>
-</div>
-</div>
+    <!-- Services Section -->
+    <section class="services-section">
+        <div class="services-header">
+            <h2>Services We Offer</h2>
+            <p>Our comprehensive logistics services integrate the best of global transport.</p>
+        </div>
 
-<!-- SHIPMENT -->
-<div class="section">
-<div class="section-title">Shipment Details</div>
-<div class="row">
-  <div class="col-6">
-    <label>Mode of Transport *</label>
-    <select id="transportMode" required>
-      <option value="">Select</option><option>Land</option><option>Air</option><option>Sea</option>
-    </select>
-    <span class="error-msg" id="error-transportMode">This field is required</span>
-  </div>
-  <div class="col-6">
-    <label>Shipment Type *</label>
-    <select id="shipmentType" required>
-      <option value="">Select</option><option>LTL</option><option>FTL</option><option>Courier</option><option>Other</option>
-    </select>
-    <span class="error-msg" id="error-shipmentType">This field is required</span>
-  </div>
-</div>
-</div>
+        <div class="services-grid">
+            <!-- Cargo Transport -->
+            <div class="service-card">
+                <div class="service-icon">🚚</div>
+                <div class="service-content">
+                    <h3>CARGO TRANSPORT</h3>
+                    <p>We provide comprehensive, end-to-end movement for goods of any size and scale.</p>
+                </div>
+            </div>
 
-<!-- CARGO -->
-<div class="section">
-<div class="section-title">Cargo Description (As Declared by Shipper)</div>
-<p class="note">All information below is as declared by the shipper. Actual weight & CBM may differ.</p>
-<div class="row">
-  <div class="col-6">
-    <label>Description *</label>
-    <input id="goodsDescription" required>
-    <span class="error-msg" id="error-goodsDescription">This field is required</span>
-  </div>
-  <div class="col-3">
-    <label>Packaging *</label>
-    <select id="packagingType" required>
-      <option value="">Select</option>
-      <option>Box</option><option>Pallet</option><option>Wooden Crate</option><option>Drum</option><option>Bag</option>
-    </select>
-    <span class="error-msg" id="error-packagingType">This field is required</span>
-  </div>
-  <div class="col-1">
-    <label>Pkgs *</label>
-    <input id="packages" type="number" min="1" required>
-    <span class="error-msg" id="error-packages">Required</span>
-  </div>
-  <div class="col-1">
-    <label>KG *</label>
-    <input id="declaredWeight" type="number" min="0.1" step="0.1" required>
-    <span class="error-msg" id="error-declaredWeight">Required</span>
-  </div>
-  <div class="col-1">
-    <label>CBM *</label>
-    <input id="cbm" type="number" min="0.01" step="0.01" required>
-    <span class="error-msg" id="error-cbm">Required</span>
-  </div>
-</div>
-</div>
+            <!-- Customs Brokerage -->
+            <div class="service-card">
+                <div class="service-icon">📋</div>
+                <div class="service-content">
+                    <h3>CUSTOMS BROKERAGE</h3>
+                    <p>We offer proactive, technology-driven customs clearance solutions that reduce processing time.</p>
+                </div>
+            </div>
 
-<!-- DOCUMENTS -->
-<div class="section hide-in-pdf">
-  <div class="section-title">Documents Upload (Optional)</div>
+            <!-- Warehousing -->
+            <div class="service-card">
+                <div class="service-icon">🏭</div>
+                <div class="service-content">
+                    <h3>WAREHOUSING</h3>
+                    <p>We provide secure, strategic, and scalable warehousing solutions worldwide.</p>
+                </div>
+            </div>
 
-  <div class="row">
-    <div class="col-4">
-      <label>Invoice</label>
-      <input type="file" id="invoiceFile" accept=".pdf,.jpg,.jpeg,.png">
-    </div>
-
-    <div class="col-4">
-      <label>Packing List</label>
-      <input type="file" id="packingListFile" accept=".pdf,.jpg,.jpeg,.png">
-    </div>
-
-    <div class="col-4">
-      <label>CMR / Waybill</label>
-      <input type="file" id="cmrFile" accept=".pdf,.jpg,.jpeg,.png">
-    </div>
-
-    <div class="col-4">
-      <label>Certificate of Origin</label>
-      <input type="file" id="originFile" accept=".pdf,.jpg,.jpeg,.png">
-    </div>
-
-    <div class="col-4">
-      <label>MSDS</label>
-      <input type="file" id="msdsFile" accept=".pdf,.jpg,.jpeg,.png">
-    </div>
-
-    <div class="col-4">
-      <label>Other Document</label>
-      <input type="file" id="otherFile" accept=".pdf,.jpg,.jpeg,.png">
-    </div>
-  </div>
-</div>
-
-
-<!-- SIGNATURE -->
-<div class="section">
-<div class="section-title">Declaration & Signatures</div>
-<p class="note">
-I hereby confirm that the above shipment has been handed over by the customer and
-received by the logistics company in the stated condition and quantity for shipment
-to the final destination.
-</p>
-<div class="row">
-  <div class="col-6">
-    <label>Customer Signature</label>
-    <canvas id="sigCustomer" class="signature-box"></canvas>
-    <button class="clear-btn hide-in-pdf" onclick="sigCustomer.clear()">Clear</button>
-  </div>
-  <div class="col-6">
-    <label>Company Signature</label>
-    <canvas id="sigCompany" class="signature-box"></canvas>
-    <button class="clear-btn hide-in-pdf" onclick="sigCompany.clear()">Clear</button>
-  </div>
-</div>
-</div>
-
-<!-- SAVE PDF BUTTON -->
-<div class="section hide-in-pdf">
-  <button type="button" id="savePdfBtn" class="submit-btn">Save as PDF</button>
-  <button type="button" id="sendEmailBtn" class="submit-btn" style="margin-top:10px;background:#2e7d32;">Send Email</button>
-</div>
-
-</div>
-
-<script>
-// SIGNATURE
-const sigCustomer=new SignaturePad(document.getElementById("sigCustomer"));
-const sigCompany=new SignaturePad(document.getElementById("sigCompany"));
-
-// HELPER FUNCTIONS
-async function fileToBase64(file){
-  return new Promise((resolve, reject)=>{
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-function getFileMimeType(filename) {
-  const ext = filename.split('.').pop().toLowerCase();
-  const mimeTypes = {
-    'pdf': 'application/pdf',
-    'jpg': 'image/jpeg',
-    'jpeg': 'image/jpeg',
-    'png': 'image/png'
-  };
-  return mimeTypes[ext] || 'application/octet-stream';
-}
-
-function validateForm() {
-  let isValid = true;
-  const requiredFields = [
-    'customerName', 'customerPhone', 'customerAddress',
-    'consigneeName', 'consigneePhone', 'consigneeAddress',
-    'transportMode', 'shipmentType', 'goodsDescription',
-    'packagingType', 'packages', 'declaredWeight', 'cbm'
-  ];
-  
-  // Hide all errors first
-  document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
-  
-  requiredFields.forEach(fieldId => {
-    const field = document.getElementById(fieldId);
-    const error = document.getElementById('error-' + fieldId);
-    
-    if (!field.value || field.value.trim() === '') {
-      isValid = false;
-      if (error) {
-        error.style.display = 'block';
-      }
-      field.style.borderColor = '#c62828';
-    } else {
-      field.style.borderColor = '';
-    }
-  });
-  
-  if (!isValid) {
-    alert('Please fill in all required fields marked with *');
-  }
-  
-  return isValid;
-}
-
-// HIGHLIGHT FILLED
-document.querySelectorAll("input,select,textarea").forEach(el=>{
-  el.addEventListener("change",()=>{
-    if(el.value || el.files?.length) el.classList.add("filled");
-    else el.classList.remove("filled");
-  });
-  
-  // Clear error on input
-  el.addEventListener("input", () => {
-    const error = document.getElementById('error-' + el.id);
-    if (error && el.value) {
-      error.style.display = 'none';
-      el.style.borderColor = '';
-    }
-  });
-});
-
-// SAVE PDF
-document.getElementById('savePdfBtn').addEventListener('click', function() {
-    if (!validateForm()) return;
-    
-    // Hide elements before PDF generation
-    document.querySelectorAll('.hide-in-pdf').forEach(el => {
-      el.style.display = 'none';
-    });
-    
-    const element = document.querySelector('.form-container');
-    const opt = {
-      margin:10,
-      filename:'Cargo_Form.pdf',
-      image:{ type:'jpeg', quality:0.98 },
-      html2canvas:{ scale:2, scrollY:0 },
-      jsPDF:{ unit:'mm', format:'a4', orientation:'portrait' },
-      pagebreak:{ mode:['avoid-all','css'] }
-    };
-    
-    html2pdf().set(opt).from(element).save().then(() => {
-      // Show elements again after PDF is generated
-      document.querySelectorAll('.hide-in-pdf').forEach(el => {
-        el.style.display = '';
-      });
-    });
-});
-
-// SEND EMAIL
-document.getElementById('sendEmailBtn').addEventListener('click', async function() {
-  if (!validateForm()) return;
-  
-  // Check signatures
-  if (sigCustomer.isEmpty() || sigCompany.isEmpty()) {
-    alert('Please provide both customer and company signatures');
-    return;
-  }
-  
-  // Collect form data
-  const formData = {
-    customerName: document.getElementById('customerName').value,
-    customerPhone: document.getElementById('customerPhone').value,
-    customerAddress: document.getElementById('customerAddress').value,
-    customerEmail: document.getElementById('customerEmail').value,
-    consigneeName: document.getElementById('consigneeName').value,
-    consigneePhone: document.getElementById('consigneePhone').value,
-    consigneeAddress: document.getElementById('consigneeAddress').value,
-    consigneeEmail: document.getElementById('consigneeEmail').value,
-    consigneeCompany: document.getElementById('consigneeCompany').value,
-    transportMode: document.getElementById('transportMode').value,
-    shipmentType: document.getElementById('shipmentType').value,
-    goodsDescription: document.getElementById('goodsDescription').value,
-    packagingType: document.getElementById('packagingType').value,
-    packages: document.getElementById('packages').value,
-    declaredWeight: document.getElementById('declaredWeight').value,
-    cbm: document.getElementById('cbm').value,
-    files: []
-  };
-
-  // Process file uploads
-  const fileInputs = [
-    'invoiceFile', 'packingListFile', 'cmrFile',
-    'originFile', 'msdsFile', 'otherFile'
-  ];
-
-  for (let id of fileInputs) {
-    const input = document.getElementById(id);
-    if (input.files.length > 0) {
-      const file = input.files[0];
-      const base64 = await fileToBase64(file);
-      formData.files.push({
-        name: file.name,
-        data: base64,
-        mimeType: getFileMimeType(file.name)
-      });
-    }
-  }
-
-  try {
-    this.disabled = true;
-    this.textContent = 'Converting to PDF...';
-    
-    // Hide elements before PDF generation
-    document.querySelectorAll('.hide-in-pdf').forEach(el => {
-      el.style.display = 'none';
-    });
-    
-    // Generate PDF
-    const element = document.querySelector('.form-container');
-    const opt = {
-      margin: 10,
-      filename: 'Cargo_Form.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, scrollY: 0 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['avoid-all', 'css'] }
-    };
-    
-    const pdf = await html2pdf().set(opt).from(element).outputPdf('dataurlstring');
-    
-    // Show elements again
-    document.querySelectorAll('.hide-in-pdf').forEach(el => {
-      el.style.display = '';
-    });
-    
-    this.textContent = 'Sending...';
-    
-    // Split large data if needed
-    const formDataStr = JSON.stringify(formData);
-    const dataSize = new Blob([formDataStr]).size;
-    const pdfSize = new Blob([pdf]).size;
-    
-    console.log('Data sizes:', { formData: dataSize, pdf: pdfSize });
-    
-    const response = await fetch('https://script.google.com/macros/s/AKfycbwaTP8XvVnf4wVaY-HfRKyxn-z0piRvxf0waLfDGeuj6Vq7uSOj9AyNqZD7cHL5nFUl5Q/exec', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        data: formDataStr,
-        pdfData: pdf,
-        timestamp: new Date().getTime()
-      })
-    });
-    
-    const result = await response.json();
-    
-    if (result.status === 'success') {
-      alert('Form submitted successfully! Email sent with PDF attachment.');
-      
-      // Clear all form fields
-      document.querySelectorAll("input, select, textarea").forEach(el => {
-        if(el.type === 'file') {
-          el.value = '';
-        } else if(el.type === 'checkbox' || el.type === 'radio') {
-          el.checked = false;
-        } else {
-          el.value = '';
-        }
-        el.classList.remove('filled');
-      });
-      
-      // Clear signatures
-      sigCustomer.clear();
-      sigCompany.clear();
-      
-      // Scroll to top
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    } else {
-      throw new Error(result.message || 'Unknown error');
-    }
-    
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Error submitting form: ' + error.message);
-  } finally {
-    this.disabled = false;
-    this.textContent = 'Send Email';
-  }
-});
-
-// AUTO SAVE EVERY 2 MINUTES
-setInterval(() => {
-  const saveData = {};
-  document.querySelectorAll("input, select, textarea").forEach(el => {
-    if(el.type!=='file' && el.id) {
-      saveData[el.id] = el.value;
-    }
-  });
-  
-  // Save signatures only if not empty
-  if (!sigCustomer.isEmpty()) {
-    saveData.sigCustomer = sigCustomer.toDataURL();
-  }
-  if (!sigCompany.isEmpty()) {
-    saveData.sigCompany = sigCompany.toDataURL();
-  }
-  
-  try {
-    localStorage.setItem('cargoFormData', JSON.stringify(saveData));
-  } catch (e) {
-    console.error('Could not save to localStorage:', e);
-  }
-}, 120000);
-
-// LOAD DATA ON PAGE LOAD
-window.addEventListener('load', () => {
-  try {
-    const savedData = localStorage.getItem('cargoFormData');
-    if (savedData) {
-      const data = JSON.parse(savedData);
-      
-      Object.keys(data).forEach(key => {
-        if (key === 'sigCustomer' && data[key]) {
-          const img = new Image();
-          img.src = data[key];
-          img.onload = () => sigCustomer.fromDataURL(img.src);
-        } else if (key === 'sigCompany' && data[key]) {
-          const img = new Image();
-          img.src = data[key];
-          img.onload = () => sigCompany.fromDataURL(img.src);
-        } else {
-          const el = document.getElementById(key);
-          if (el && data[key]) {
-            el.value = data[key];
-            if (el.value) el.classList.add('filled');
-          }
-        }
-      });
-    }
-  } catch (e) {
-    console.error('Could not load from localStorage:', e);
-  }
-});
-</script>
-
+            <!-- Supply Chain Management -->
+            <div class="service-card">
+                <div class="service-icon">📦</div>
+                <div class="service-content">
+                    <h3>SUPPLY CHAIN MANAGEMENT</h3>
+                    <p>We are dedicated to transforming your end-to-end global operations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
